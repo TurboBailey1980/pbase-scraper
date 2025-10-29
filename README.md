@@ -68,3 +68,11 @@ python3 -m pbase_scraper --username <USERNAME> --output ./downloads
 - Each gallery is normalized and visited once; recursion prevents revisiting branches already scraped.
 - Image size links are prioritized (`original` → `large` → `medium` → displayed image) to ensure the best available quality.
 - Downloaded files are written in streaming chunks and appended with numeric suffixes when duplicates appear.
+
+### File Naming Details
+
+- Captions become the base filename, cleaned for filesystem safety and trimmed to fit common path limits.
+- If the gallery has a title, it is prefixed as `<Gallery Title> - <Caption>` so multi-gallery runs stay organized.
+- When captions are missing, the scraper falls back to the original asset name supplied by PBase.
+- Existing files are never overwritten; `_1`, `_2`, … suffixes are added when duplicates are encountered.
+- Known placeholder assets (`m_pbase*`, `pixel.gif`, `blank.gif`) are ignored entirely to keep the archive noise-free.
