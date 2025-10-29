@@ -20,7 +20,7 @@ Run the scraper as a module so the package entry point is used:
 python3 -m pbase_scraper --username <USERNAME> --output ./downloads
 ```
 
-You will be prompted for the password if `--password` is not provided. By default the scraper starts at `<username>/root`, discovers all nested galleries, and saves the largest available image for each entry. Relative paths passed with `--start` (e.g. `--start <username>/gallery/bailey_family_photographs`) restrict the scraper to specific galleries; repeat the flag for multiple starting points.
+You will be prompted for the password if `--password` is not provided. By default the scraper starts at `<username>/root`, discovers all nested galleries, and saves the largest available image for each entry. Relative paths passed with `--start` (e.g. `--start <username>/gallery/<your album>`) restrict the scraper to specific galleries; repeat the flag for multiple starting points.
 
 Available options:
 
