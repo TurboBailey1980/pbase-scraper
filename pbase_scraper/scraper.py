@@ -49,7 +49,7 @@ class PBaseScraper:
         if normalized in self.visited_galleries:
             logger.debug("Skipping already visited gallery %s", normalized)
             return
-        logger.info("Scraping gallery %s", normalized)
+        logger.info("Scraping gallery [bold cyan]%s[/]", normalized)
         self.visited_galleries.add(normalized)
 
         soup = self.client.get_soup(normalized)
@@ -75,18 +75,18 @@ class PBaseScraper:
         if normalized in self.visited_images:
             logger.debug("Skipping already visited image %s", normalized)
             return
-        logger.info("Resolving image %s", normalized)
+        logger.info("Resolving image [magenta]%s[/]", normalized)
         self.visited_images.add(normalized)
 
         soup = self.client.get_soup(normalized)
         image = self._resolve_best_image(soup, normalized, gallery_title)
         if not image:
-            logger.warning("Unable to resolve image source for %s", normalized)
+            logger.warning("[yellow]Unable to resolve image source[/] for %s", normalized)
             return
 
         destination = self._output_path(self.output_dir, image.filename)
         if destination.exists():
-            logger.info("Skipping existing file %s", destination)
+            logger.info("[yellow]Skipping[/] existing file [bold]%s[/]", destination)
             return
 
         response = self.client.get(image.url, stream=True, headers={"Referer": image.referer})
@@ -95,7 +95,7 @@ class PBaseScraper:
                 for chunk in response.iter_content(chunk_size=1024 * 32):
                     if chunk:
                         handle.write(chunk)
-            logger.info("Saved %s", destination)
+            logger.info("Saved [bold green]%s[/]", destination)
         finally:
             response.close()
 
