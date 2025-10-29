@@ -6,6 +6,9 @@ import logging
 from pathlib import Path
 from typing import Sequence
 
+from rich.logging import RichHandler
+from rich.traceback import install
+
 from .client import PBaseClient
 from .scraper import PBaseScraper
 
@@ -58,10 +61,22 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def configure_logging(level: str) -> None:
-    logging.basicConfig(
-        level=getattr(logging, level),
-        format="%(asctime)s - %(levelname)s - %(message)s",
+    install(show_locals=False)
+    log_level = getattr(logging, level.upper(), logging.INFO)
+    root_logger = logging.getLogger()
+    root_logger.handlers.clear()
+    handler = RichHandler(
+        rich_tracebacks=True,
+        markup=True,
+        show_time=False,
+        show_path=False,
     )
+    logging.basicConfig(
+        level=log_level,
+        format="%(message)s",
+        handlers=[handler],
+    )
+    logging.captureWarnings(True)
 
 
 def main(argv: Sequence[str] | None = None) -> None:
@@ -88,4 +103,3 @@ def main(argv: Sequence[str] | None = None) -> None:
 
 if __name__ == "__main__":
     main()
-
